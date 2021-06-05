@@ -13,11 +13,11 @@ while 1:
     expression = input("Enter math expression: ")
     try:
         my_lexer.lex(expression)
-        for i in my_lexer.token_list:
-            print(f"TOKEN: {i.token_enum}")
+        # for i in my_lexer.token_list:
+        #     print(f"TOKEN: {i.token_enum}")
         my_parser = Pr.Parser(my_lexer.token_list)
         abstract_syntax_tree = my_parser.parse()
-        print(abstract_syntax_tree)
+        # print(abstract_syntax_tree)
         print(Cal.process_ast(abstract_syntax_tree))
 
     except Exception as e:

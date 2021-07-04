@@ -84,10 +84,10 @@ class Parser:
 
         if removed_token is not None:
             if self.match_and_remove(Tk.Token.TokenEnum.EXPONENT) is not None:
-                exponent_of_node = self.expression()
+                exponent_of_node = self.factor()
                 if exponent_of_node is None:
                     print("Found exponent without any expression following")
-                    raise
+                    raise Exception
             if '.' in removed_token.value_string:
                 generated_node = Fl.FloatNode(removed_token.value_string)
             else:
@@ -101,16 +101,14 @@ class Parser:
             if processed_expression is not None:
                 if self.match_and_remove(Tk.Token.TokenEnum.RPAREN) is not None:
                     if self.match_and_remove(Tk.Token.TokenEnum.EXPONENT) is not None:
-                        exponent_of_node = self.expression()
+                        exponent_of_node = self.factor()
                         if exponent_of_node is None:
                             print("Found exponent without any expression following")
-                            raise
+                            raise Exception
                     generated_node = processed_expression
                     generated_node.exponent = exponent_of_node
                     return generated_node
                 print("Found left parenthesis and expression without right parenthesis")
-                raise
+                raise Exception
             print("Found right parenthesis without required expression")
-            raise
-
-        # FIGURE OUT A BETTER WAY TO IMPLEMENT EXPONENTS
+            raise Exception

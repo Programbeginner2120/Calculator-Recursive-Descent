@@ -40,8 +40,12 @@ def determine_generation(calc_input, idx, curr_type=None):
         return False
     next_char = calc_input[idx + 1]
     next_char_type = match_token_type(next_char)
-    if next_char_type != curr_type:
+    if next_char_type != curr_type or curr_type == next_char_type == Tk.Token.TokenEnum.MINUS:
         return True
+    if next_char_type == curr_type:
+        if curr_type == Tk.Token.TokenEnum.PLUS or curr_type == Tk.Token.TokenEnum.TIMES or curr_type == \
+                Tk.Token.TokenEnum.DIVIDE or curr_type == Tk.Token.TokenEnum.EXPONENT:
+            raise MathSyntaxError
     return False
 
 
@@ -62,7 +66,8 @@ class Lexer:
                         if idx == 0 or (self.token_list[idx - 1].token_enum == Tk.Token.TokenEnum.PLUS or
                                         self.token_list[idx - 1].token_enum == Tk.Token.TokenEnum.MINUS or
                                         self.token_list[idx - 1].token_enum == Tk.Token.TokenEnum.TIMES or
-                                        self.token_list[idx - 1].token_enum == Tk.Token.TokenEnum.DIVIDE):
+                                        self.token_list[idx - 1].token_enum == Tk.Token.TokenEnum.DIVIDE or
+                                        self.token_list[idx - 1].token_enum == Tk.Token.TokenEnum.EXPONENT):
                             self.token_list[idx + 1].value_string = '-' + self.token_list[idx + 1].value_string
                             self.token_list.remove(lexeme)
 

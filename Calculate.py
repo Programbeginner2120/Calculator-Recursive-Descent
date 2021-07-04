@@ -16,10 +16,13 @@ def process_add_subtract(current_node: Node):
     if isinstance(current_node, Mop.MathOpNode):
         left_node = process_add_subtract(current_node.left_node)
         right_node = process_add_subtract(current_node.right_node)
+        exp = process_add_subtract(current_node.exponent)
         if current_node.operation_type == Tk.Token.TokenEnum.PLUS:
-            return left_node + right_node
+            rv = (left_node + right_node) ** exp if exp is not None else left_node + right_node
+            return rv
         elif current_node.operation_type == Tk.Token.TokenEnum.MINUS:
-            return left_node - right_node
+            rv = (left_node - right_node) ** exp if exp is not None else left_node - right_node
+            return rv
     return process_multiply_divide(current_node)
 
 
@@ -29,12 +32,17 @@ def process_multiply_divide(current_node: Node):
     if isinstance(current_node, Mop.MathOpNode):
         left_node = process_add_subtract(current_node.left_node)
         right_node = process_add_subtract(current_node.right_node)
+        exp = process_add_subtract(current_node.exponent)
         if current_node.operation_type == Tk.Token.TokenEnum.TIMES:
-            return left_node * right_node
+            rv = (left_node * right_node) ** exp if exp is not None else left_node * right_node
+            return rv
         elif current_node.operation_type == Tk.Token.TokenEnum.DIVIDE:
-            return left_node / right_node
+            rv = (left_node / right_node) ** exp if exp is not None else left_node / right_node
+            return rv
     return process_int_float(current_node)
 
 
 def process_int_float(current_node: Node):
-    return current_node.num_value
+    exp = process_add_subtract(current_node.exponent)
+    rv = current_node.num_value ** exp if current_node.exponent is not None else current_node.num_value
+    return rv

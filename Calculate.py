@@ -3,7 +3,6 @@ import FloatNode as Fl
 import IntegerNode as In
 import MathOperationNode as Mop
 import Token as Tk
-from Error import MathSyntaxError
 
 
 def process_ast(ast: Node):
